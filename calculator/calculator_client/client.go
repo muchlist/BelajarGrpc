@@ -19,7 +19,7 @@ func main() {
 	defer cc.Close()
 
 	c := calculatorpb.NewCalculatorServiceClient(cc)
-	//fmt.Printf("created client: %f", c)
+
 	doUnary(c)
 }
 
