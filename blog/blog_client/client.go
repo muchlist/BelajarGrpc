@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 
 	"github.com/muchlist/BelajarGrpc/blog/blogpb"
@@ -51,5 +52,21 @@ func main() {
 	}
 
 	fmt.Printf("Blog was succesfull read: %v\n", res)
+
+	//List blog
+	stream, err := c.ListBlog(context.Background(), &blogpb.ListBlogRequest{})
+	if err != nil {
+		log.Fatalf("error while calling ListBlog RPC: %v", err)
+	}
+	for {
+		res, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalf("Something happende: %v", err)
+		}
+		fmt.Println(res.GetBlog())
+	}
 
 }
